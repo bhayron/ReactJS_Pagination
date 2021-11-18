@@ -3,11 +3,16 @@ import TutorialDataService from "../services/TutorialService";
 import { useTable } from "react-table";
 
 import Pagination from "@material-ui/lab/Pagination";
-
+//Modal Delete
+import Swal from 'sweetalert2'
 
 const TutorialsList = (props) => {
   const [tutorials, setTutorials] = useState([]);
   const [searchTitle, setSearchTitle] = useState("");
+  //Modal State
+  const [open, setOpen] = useState(false);
+  const [del, setDel] = useState(false);
+
   const tutorialsRef = useRef();
 
   const [page, setPage] = useState(1);
@@ -86,10 +91,24 @@ const TutorialsList = (props) => {
     props.history.push("/tutorials/" + id);
   };
 
-  const deleteTutorial = (rowIndex) => {
+  async function deleteTutorial2(rowIndex) {
     const id = tutorialsRef.current[rowIndex].id;
-
-    TutorialDataService.remove(id)
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        )
+        TutorialDataService.remove(id)
       .then((response) => {
         props.history.push("/tutorials");
 
@@ -101,7 +120,9 @@ const TutorialsList = (props) => {
       .catch((e) => {
         console.log(e);
       });
-  };
+      }
+    })
+  }
 
   const handlePageChange = (event, value) => {
     setPage(value);
@@ -139,11 +160,11 @@ const TutorialsList = (props) => {
               <span onClick={() => openTutorial(rowIdx)}>
                 <i className="far fa-edit action mr-2"></i>
               </span>
-
-              <span onClick={() => deleteTutorial(rowIdx)}>
+                  {' '}
+              <span onClick={() => deleteTutorial2(rowIdx)}>
                 <i className="fas fa-trash action"></i>
-              </span>
-            </div>
+              </span>            
+            </div>            
           );
         },
       },
@@ -161,6 +182,8 @@ const TutorialsList = (props) => {
     columns,
     data: tutorials,
   });
+  
+  const buceta = 'Buceta';
 
   return (
     <div className="list row">
@@ -239,7 +262,7 @@ const TutorialsList = (props) => {
             onChange={handlePageChange}
           />
         </div>
-      </div>
+      </div> 
 
       <div className="col-md-8">
         <button className="btn btn-sm btn-danger" onClick={removeAllTutorials}>
