@@ -91,7 +91,7 @@ const TutorialsList = (props) => {
     props.history.push("/tutorials/" + id);
   };
 
-  async function deleteTutorial2(rowIndex) {
+  function deleteTutorial(rowIndex) {
     const id = tutorialsRef.current[rowIndex].id;
     Swal.fire({
       title: 'Are you sure?',
@@ -111,7 +111,7 @@ const TutorialsList = (props) => {
         TutorialDataService.remove(id)
       .then((response) => {
         props.history.push("/tutorials");
-
+        console.log(response);
         let newTutorials = [...tutorialsRef.current];
         newTutorials.splice(rowIndex, 1);
 
@@ -161,7 +161,7 @@ const TutorialsList = (props) => {
                 <i className="far fa-edit action mr-2"></i>
               </span>
                   {' '}
-              <span onClick={() => deleteTutorial2(rowIdx)}>
+              <span onClick={() => deleteTutorial(rowIdx)}>
                 <i className="fas fa-trash action"></i>
               </span>            
             </div>            
@@ -181,9 +181,8 @@ const TutorialsList = (props) => {
   } = useTable({
     columns,
     data: tutorials,
-  });
-  
-  const buceta = 'Buceta';
+  });  
+
 
   return (
     <div className="list row">

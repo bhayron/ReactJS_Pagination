@@ -1,31 +1,31 @@
-import http from "../http-common";
+import api from "./api";
 
 const getAll = (params) => {
-  return http.get("/tutorials", { params });
+  return api.get("/tutorials", { params });
 };
 
 const get = (id) => {
-  return http.get(`/tutorials/${id}`);
+  return api.get(`/tutorials/${id}`);
 };
 
 const create = (data) => {
-  return http.post("/tutorials", data);
+  return api.post("/tutorials", data);
 };
 
 const update = (id, data) => {
-  return http.put(`/tutorials/${id}`, data);
+  return api.put(`/tutorials/${id}`, data);
 };
 
 const remove = (id) => {
-  return http.delete(`/tutorials/${id}`);
+  return api.delete(`/tutorials/${id}`);
 };
 
 const removeAll = () => {
-  return http.delete(`/tutorials`);
+  return api.delete(`/tutorials`);
 };
 
 const findByTitle = (title) => {
-  return http.get(`/tutorials?title=${title}`);
+  return api.get(`/tutorials?title=${title}`);
 };
 
 const TutorialService = {
